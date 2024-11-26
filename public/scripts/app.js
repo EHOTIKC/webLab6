@@ -22,7 +22,7 @@ function addAccordion() {
       content: div.querySelector(".accordion-content").innerText
     }));
   
-    await fetch('https://your-project-name.up.railway.app/save', {
+    await fetch('https://weblab6-production.up.railway.app/save', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(items)
@@ -31,7 +31,7 @@ function addAccordion() {
   
   // Завантаження акордеону з сервера
   async function loadAccordion() {
-    const response = await fetch('https://your-project-name.up.railway.app/load');
+    const response = await fetch('https://weblab6-production.up.railway.app/load');
     const items = await response.json();
   
     const accordion = document.getElementById("accordion");

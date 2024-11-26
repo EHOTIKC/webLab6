@@ -1,4 +1,3 @@
-// Динамічне додавання акордеону
 function addAccordion() {
     const title = document.getElementById("title").value;
     const content = document.getElementById("content").value;
@@ -15,7 +14,6 @@ function addAccordion() {
     document.getElementById("accordionForm").reset();
   }
   
-  // Збереження акордеону на сервері
   async function saveAccordion() {
     const items = Array.from(document.querySelectorAll("#accordion > div")).map(div => ({
       title: div.querySelector(".accordion-header").innerText,
@@ -29,7 +27,6 @@ function addAccordion() {
     });
   }
   
-  // Завантаження акордеону з сервера
   async function loadAccordion() {
     const response = await fetch('https://weblab6-production.up.railway.app/load');
     const items = await response.json();
@@ -46,7 +43,6 @@ function addAccordion() {
     });
   }
   
-  // Автоматичне оновлення даних на сторінці 2
   if (window.location.pathname === '/page2.html') {
     loadAccordion();
     setInterval(loadAccordion, 5000);

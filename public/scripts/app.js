@@ -33,15 +33,30 @@ function addAccordion() {
   
     const accordion = document.getElementById("accordion");
     accordion.innerHTML = '';
+  
     items.forEach(item => {
       const div = document.createElement("div");
+  
       div.innerHTML = `
         <button class="accordion-header">${item.title}</button>
         <div class="accordion-content">${item.content}</div>
       `;
+  
+      const header = div.querySelector(".accordion-header");
+      header.addEventListener("click", () => {
+        div.remove();
+      });
+  
+
+      header.addEventListener("dblclick", () => {
+        const content = div.querySelector(".accordion-content");
+        content.classList.toggle("active");
+      });
+  
       accordion.appendChild(div);
     });
   }
+  
   
   if (window.location.pathname === '/page2.html') {
     loadAccordion();

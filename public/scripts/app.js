@@ -1,3 +1,10 @@
+async function clearAccordion() {
+  const accordion = document.getElementById("accordion");
+  accordion.innerHTML = '';
+  await saveAccordion();
+  alert("Всі елементи акордеона видалені!");
+}
+
 async function addAccordion() {
   const title = document.getElementById("title").value.trim();
   const content = document.getElementById("content").value.trim();
@@ -65,6 +72,7 @@ async function loadAccordion() {
 }
 
 if (window.location.pathname === '/page2.html') {
+  clearAccordion();
   loadAccordion();
 
   setInterval(loadAccordion, 5000);

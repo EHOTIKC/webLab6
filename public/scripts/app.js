@@ -1,4 +1,4 @@
-function addAccordion() {
+async function addAccordion() {
   const title = document.getElementById("title").value.trim();
   const content = document.getElementById("content").value.trim();
 
@@ -8,27 +8,34 @@ function addAccordion() {
   }
 
   const accordion = document.getElementById("accordion");
-  const item = document.createElement("div");
+  const item = createAccordionItem({ title, content });
 
-  item.innerHTML = `
+  accordion.appendChild(item);
+  document.getElementById("accordionForm").reset();
+
+  await saveAccordion();
+}
+
+function createAccordionItem({ title, content }) {
+  const div = document.createElement("div");
+  div.innerHTML = `
     <button class="accordion-header">${title}</button>
     <div class="accordion-content">${content}</div>
   `;
 
-  const header = item.querySelector(".accordion-header");
+  const header = div.querySelector(".accordion-header");
 
   header.addEventListener("click", () => {
-    const content = item.querySelector(".accordion-content");
+    const content = div.querySelector(".accordion-content");
     content.classList.toggle("active");
   });
 
-  header.addEventListener("dblclick", () => {
-    item.remove();
-    saveAccordion();
+  header.addEventListener("dblclick", async () => {
+    div.remove();
+    await saveAccordion();
   });
 
-  accordion.appendChild(item);
-  document.getElementById("accordionForm").reset();
+  return div;
 }
 
 async function saveAccordion() {
@@ -37,13 +44,11 @@ async function saveAccordion() {
     content: div.querySelector(".accordion-content").innerText
   }));
 
-  if (items.length > 0) {
-    await fetch('https://weblab6-production.up.railway.app/save', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(items)
-    });
-  }
+  await fetch('https://weblab6-production.up.railway.app/save', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(items)
+  });
 }
 
 async function loadAccordion() {
@@ -54,30 +59,13 @@ async function loadAccordion() {
   accordion.innerHTML = '';
 
   items.forEach(item => {
-    const div = document.createElement("div");
-
-    div.innerHTML = `
-      <button class="accordion-header">${item.title}</button>
-      <div class="accordion-content">${item.content}</div>
-    `;
-
-    const header = div.querySelector(".accordion-header");
-
-    header.addEventListener("click", () => {
-      const content = div.querySelector(".accordion-content");
-      content.classList.toggle("active");
-    });
-
-    header.addEventListener("dblclick", () => {
-      div.remove();
-      saveAccordion();
-    });
-
+    const div = createAccordionItem(item);
     accordion.appendChild(div);
   });
 }
 
 if (window.location.pathname === '/page2.html') {
   loadAccordion();
+
   setInterval(loadAccordion, 5000);
 }
